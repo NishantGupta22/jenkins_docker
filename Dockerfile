@@ -1,5 +1,5 @@
 FROM openjdk:latest
 WORKDIR /app
-COPY hello.java /app
-RUN  javac hello.java
-CMD ["java","hello"] 
+COPY HelloWorld.java /app
+RUN  javac HelloWorld.java
+CMD ["java","HelloWorld"] 

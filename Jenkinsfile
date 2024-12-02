@@ -1,43 +1,36 @@
 pipeline {
+    agent any
 
-agent any
+    environment {
+        DOCKER_IMAGE = 'hello-world-java:latest' // Docker image name
+    }
 
-environment {
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
-DOCKER_IMAGE = 'hello-world-java:latest' // Docker image name
+        stage('Build') {
+            steps {
+                sh 'javac HelloWorld.java'
+            }
+        }
 
-}
+        stage('Package') {
+            steps {
+                sh 'jar cf HelloWorld.jar HelloWorld.class'
+            }
+        }
+    }
 
-stages {
-
-stage('Checkout') {
-
-steps {
-
-checkout scm
-
-}
-
-}
-
-stage('Build') {
-
-steps {
-
-sh 'javac hello.java'
-
-}
-
-}
-
-stage('Package') {
-
-steps {
-
-sh 'jar cf HelloWorld.jar hello.class'
-
-}
-
-}
-
+    post {
+        success {
+            echo 'Build and packaging completed successfully.'
+        }
+        failure {
+            echo 'Build or packaging failed.'
+        }
+    }
 }
